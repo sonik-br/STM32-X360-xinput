@@ -119,13 +119,13 @@ void readButtons(){
 void readAdcValues(){
 	
 	if( adcValueReady == 1 ){
-		rightTriggerValue = (uint8_t)map( rightTriggerValue_ADC, 0, 4040, 0, UINT8_MAX );
-		leftTriggerValue 	= (uint8_t)map( leftTriggerValue_ADC, 0, 4040, 0, UINT8_MAX );
+		//rightTriggerValue = (uint8_t)map( rightTriggerValue_ADC, 0, 4040, 0, UINT8_MAX );
+		//leftTriggerValue 	= (uint8_t)map( leftTriggerValue_ADC, 0, 4040, 0, UINT8_MAX );
 			
-		xRightStickValue = (int16_t)map( xRightStickValue_ADC, 0, 4040, INT16_MIN, INT16_MAX );
-		yRightStickValue = (int16_t)map( yRightStickValue_ADC, 0, 4040, INT16_MIN, INT16_MAX );							// 4040 is the max value that my adc presents with potentiometers
-		xLeftStickValue = (int16_t)map( xLeftStickValue_ADC, 0, 4040, INT16_MIN, INT16_MAX );
-		yLeftStickValue = (int16_t)map( yLeftStickValue_ADC, 0, 4040, INT16_MIN, INT16_MAX );
+		//xRightStickValue = (int16_t)map( xRightStickValue_ADC, 0, 4040, INT16_MIN, INT16_MAX );
+		//yRightStickValue = (int16_t)map( yRightStickValue_ADC, 0, 4040, INT16_MIN, INT16_MAX );							// 4040 is the max value that my adc presents with potentiometers
+		//xLeftStickValue = (int16_t)map( xLeftStickValue_ADC, 0, 4040, INT16_MIN, INT16_MAX );
+		//yLeftStickValue = (int16_t)map( yLeftStickValue_ADC, 0, 4040, INT16_MIN, INT16_MAX );
 		
 		adcValueReady = 0;
 	}
