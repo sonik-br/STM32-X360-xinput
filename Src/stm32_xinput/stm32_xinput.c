@@ -29,6 +29,12 @@ int16_t yLeftStickValue = 0;
 int16_t xRightStickValue = 0;
 int16_t yRightStickValue = 0;
 
+//SOCD
+uint8_t lastDpadArray[4] = {0,0,0,0};
+//int8_t socdResolvedUD = 0;
+int8_t socdResolvedLR = 0;
+
+
 struct _pin digitalArray[NUM_BUTTONS];
 struct _pin analogArray[NUM_ANALOG];
 struct _pin encoderPins[2];
@@ -108,6 +114,36 @@ void readButtons(){
 	dpadArray[1] = !HAL_GPIO_ReadPin( digitalArray[12].port, digitalArray[12].pin );
 	dpadArray[2] = !HAL_GPIO_ReadPin( digitalArray[13].port, digitalArray[13].pin );
 	dpadArray[3] = !HAL_GPIO_ReadPin( digitalArray[14].port, digitalArray[14].pin );
+
+	
+	//Simple SOCD for Left/Right with Last Input Priority Resolution
+	if(dpadArray[2] && dpadArray[3]) { //if both pressed
+		if(socdResolvedLR) { //if resolved, returns it
+			dpadArray[2] = lastDpadArray[2];
+			dpadArray[3] = lastDpadArray[3];
+		} else { //needs to resolve
+			if (lastDpadArray[2]) { // left was pressed? the swap to right
+				lastDpadArray[2] = 0;
+				lastDpadArray[3] = 1;
+			} else if (lastDpadArray[3]) { // right was pressed? the swap to left
+				lastDpadArray[2] = 1;
+				lastDpadArray[3] = 0;
+			} else { // default. might not be needed
+				lastDpadArray[2] = 1;
+				lastDpadArray[3] = 0;
+			}
+			socdResolvedLR = 1;
+			dpadArray[2] = lastDpadArray[2]; // update state
+			dpadArray[3] = lastDpadArray[3];
+		}
+	} else { // no need to resolve. but will store current state for next reading
+		socdResolvedLR = 0;
+		lastDpadArray[2] = dpadArray[2];
+		lastDpadArray[3] = dpadArray[3];
+	}
+	//end SOCD
+	
+	
 	
 	XINPUT_dpadUpdate( dpadArray[0], dpadArray[1], dpadArray[2], dpadArray[3] );			// update dpad
 
